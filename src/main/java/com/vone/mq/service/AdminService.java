@@ -53,7 +53,7 @@ public class AdminService {
 
         return ResUtil.success();
     }
-    public CommonRes saveSetting(String user,String pass,String notifyUrl,String returnUrl,String key,String wxpay,String zfbpay,String close,String payQf){
+    public CommonRes saveSetting(String user,String pass,String notifyUrl,String returnUrl,String key,String wxpay,String zfbpay,String tngpay,String close,String payQf){
         Setting s = new Setting();
         s.setVkey("user");
         s.setVvalue(user);
@@ -80,6 +80,9 @@ public class AdminService {
         settingDao.save(s);
         s.setVkey("zfbpay");
         s.setVvalue(zfbpay);
+        settingDao.save(s);
+        s.setVkey("tngpay");
+        s.setVvalue(tngpay != null ? tngpay : "");
         settingDao.save(s);
 
         s.setVkey("payQf");

@@ -78,6 +78,19 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">Touch and Go eWallet码</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="tngup">上传收款二维码</button>（此处上传的是无金额的收款二维码）
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="tngimg">
+                    <p id="tngcs"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <div class="layui-form-item" style="text-align: right;">
@@ -162,6 +175,32 @@
                 });
             }
         });
+
+        var uploadInst3 = upload.render({
+            elem: '#tngup'
+            , url: 'deQrcode2'
+            , before: function (obj) {
+
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code == -1) {
+                    return layer.msg('上传失败');
+                }
+                if (res.data=="" ){
+                    return layer.msg('请上传Touch and Go eWallet无金额收款二维码');
+                }
+                $('#tngimg').attr('src', "enQrcode?url="+res.data);
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#tngcs');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs tngcs">重试</a>');
+                demoText.find('.tngcs').on('click', function () {
+                    uploadInst3.upload();
+                });
+            }
+        });
         form.render();
 
     });
@@ -211,9 +250,15 @@
             layer.msg("请上传支付宝无金额的收款二维码");
             return;
         }
+        var tngimg = $("#tngimg").attr("src");
+        if (tngimg=="" || !tngimg){
+            layer.msg("请上传Touch and Go eWallet无金额的收款二维码");
+            return;
+        }
         wximg = wximg.replace(/enQrcode\?url=/g,"");
         zfbimg = zfbimg.replace(/enQrcode\?url=/g,"");
-        $.post("/admin/saveSetting","user="+user+"&pass="+pass+"&notifyUrl="+notifyUrl+"&returnUrl="+returnUrl+"&key="+key+"&wxpay="+wximg+"&zfbpay="+zfbimg+"&close="+close+"&payQf="+payQf,function (data) {
+        tngimg = tngimg.replace(/enQrcode\?url=/g,"");
+        $.post("/admin/saveSetting","user="+user+"&pass="+pass+"&notifyUrl="+notifyUrl+"&returnUrl="+returnUrl+"&key="+key+"&wxpay="+wximg+"&zfbpay="+zfbimg+"&tngpay="+tngimg+"&close="+close+"&payQf="+payQf,function (data) {
             if (data.code==1){
                 $.post("/admin/getSettings",function (data) {
                     console.log(data);
@@ -230,6 +275,9 @@
                         }
                         if (data.data.zfbpay!=""){
                             $('#zfbimg').attr('src', "enQrcode?url="+data.data.zfbpay);
+                        }
+                        if (data.data.tngpay!=""){
+                            $('#tngimg').attr('src', "enQrcode?url="+data.data.tngpay);
                         }
                     }
                 });
@@ -255,6 +303,9 @@
             }
             if (data.data.zfbpay!=""){
                 $('#zfbimg').attr('src', "enQrcode?url="+data.data.zfbpay);
+            }
+            if (data.data.tngpay!=""){
+                $('#tngimg').attr('src', "enQrcode?url="+data.data.tngpay);
             }
             layui.form.render();
         }

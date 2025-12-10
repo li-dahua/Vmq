@@ -108,7 +108,7 @@ public class WebController {
      *
      * @param payId     商户订单号
      * @param param     订单保存的信息
-     * @param type      支付方式 1|微信 2|支付宝
+     * @param type      支付方式 1|微信 2|支付宝 3|Touch and Go eWallet
      * @param price     订单价格
      * @param notifyUrl 异步通知地址，如果为空则使用系统后台设置的地址
      * @param returnUrl 支付完成后同步跳转地址，将会携带参数跳转
@@ -122,10 +122,10 @@ public class WebController {
             return new Gson().toJson(ResUtil.error("请传入商户订单号"));
         }
         if (type == null) {
-            return new Gson().toJson(ResUtil.error("请传入支付方式=>1|微信 2|支付宝"));
+            return new Gson().toJson(ResUtil.error("请传入支付方式=>1|微信 2|支付宝 3|Touch and Go eWallet"));
         }
-        if (type != 1 && type != 2) {
-            return new Gson().toJson(ResUtil.error("支付方式错误=>1|微信 2|支付宝"));
+        if (type != 1 && type != 2 && type != 3) {
+            return new Gson().toJson(ResUtil.error("支付方式错误=>1|微信 2|支付宝 3|Touch and Go eWallet"));
         }
 
 

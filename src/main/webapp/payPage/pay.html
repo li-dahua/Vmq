@@ -29,6 +29,7 @@
 
         <span class="ico_log ico-1" v-if="payType == 1"></span>
         <span class="ico_log ico-2" v-if="payType == 2"></span>
+        <span class="ico_log ico-3" v-if="payType == 3"></span>
 
     </h1>
 
@@ -228,6 +229,8 @@
                 data.data.payType1 = "微信";
             }else if (data.data.payType == 2) {
                 data.data.payType1 = "支付宝";
+            }else if (data.data.payType == 3) {
+                data.data.payType1 = "Touch and Go eWallet";
             }
 
 

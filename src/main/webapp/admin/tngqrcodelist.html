@@ -1,0 +1,56 @@
+<style>
+    .layui-table-cell {
+        height: auto;
+    }
+    .layui-table img {
+        max-width: 200px;
+    }
+</style>
+
+<table class="layui-hide" id="test" lay-filter="tngqrlist"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url: '/admin/getPayQrcodes?type=3'
+            ,cols: [[
+                {type:'numbers',title: '序号'}
+
+                ,{field:'', width:230, title: '二维码', templet:function (data) {
+                        return "<img src='/enQrcode?url="+encodeURIComponent(data.payUrl)+"'/>"
+                    }
+                }
+                ,{field:'payUrl', minWidth:150, title: '内容'}
+                ,{field:'price',width:100, title: '金额'}
+                ,{title: '操作', minWidth: 80, align:'center', toolbar: '#barDemo'}
+
+            ]],
+            page:true
+        });
+        //监听工具条
+        table.on('tool(tngqrlist)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    $.post("/admin/delPayQrcode","id="+data.id,function (data) {
+                        if (data.code==1){
+                            obj.del();
+                            layer.close(index);
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    });
+
+                });
+            }
+        });
+
+    });
+
+</script>

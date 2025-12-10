@@ -92,6 +92,26 @@ public class AdminController {
         node.put("node",menu2);
         menu.add(node);
 
+        List<Map<String,Object>> menu3 = new ArrayList<>();
+
+        node = new HashMap<>();
+        node.put("name","添加");
+        node.put("type","url");
+        node.put("url","admin/addtngqrcode.html?t="+new Date().getTime());
+        menu3.add(node);
+
+        node = new HashMap<>();
+        node.put("name","管理");
+        node.put("type","url");
+        node.put("url","admin/tngqrcodelist.html?t="+new Date().getTime());
+        menu3.add(node);
+
+        node = new HashMap<>();
+        node.put("name","Touch and Go eWallet二维码");
+        node.put("type","menu");
+        node.put("node",menu3);
+        menu.add(node);
+
         node = new HashMap<>();
         node.put("name","订单列表");
         node.put("type","url");
@@ -106,11 +126,11 @@ public class AdminController {
         return menu;
     }
     @RequestMapping("/admin/saveSetting")
-    public CommonRes saveSetting(HttpSession session,String user,String pass,String notifyUrl,String returnUrl,String key,String wxpay,String zfbpay,String close,String payQf){
+    public CommonRes saveSetting(HttpSession session,String user,String pass,String notifyUrl,String returnUrl,String key,String wxpay,String zfbpay,String tngpay,String close,String payQf){
         if (session.getAttribute("login")==null){
             return ResUtil.error("未登录");
         }
-        return adminService.saveSetting(user, pass, notifyUrl, returnUrl, key, wxpay, zfbpay, close, payQf);
+        return adminService.saveSetting(user, pass, notifyUrl, returnUrl, key, wxpay, zfbpay, tngpay, close, payQf);
     }
     @RequestMapping("/admin/getSettings")
     public CommonRes getSettings(HttpSession session){

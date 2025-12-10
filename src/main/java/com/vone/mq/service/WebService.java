@@ -81,6 +81,8 @@ public class WebService {
             payUrl = settingDao.findById("wxpay").get().getVvalue();
         }else if (type == 2){
             payUrl = settingDao.findById("zfbpay").get().getVvalue();
+        }else if (type == 3){
+            payUrl = settingDao.findById("tngpay").get().getVvalue();
         }
 
         if (payUrl==""){
